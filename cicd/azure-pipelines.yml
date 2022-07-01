@@ -54,17 +54,17 @@ stages:
 
     - script: |
         databricks fs cp -r --overwrite $(Build.Repository.LocalPath)/dist \
-        dbfs:/projects/cicd-smoother/$(Build.SourceBranchName)/wheel/versions --profile QA
+        dbfs:/projects/cicd-techsession-july2022/$(Build.SourceBranchName)/wheel/versions --profile QA
       displayName: 'Copy build to QA DBFS'
 
     - script: |
-        databricks workspace import_dir -o -e $(Build.Repository.LocalPath) /projects/cicd-smoother/ --profile QA
+        databricks workspace import_dir -o -e $(Build.Repository.LocalPath) /projects/cicd-techsession-july2022/ --profile QA
       displayName: 'Copy test notebooks to QA workspace'
 
     - script: |
         python $(Build.Repository.LocalPath)/cicd/cicd-scripts/update-dlt-pipeline.py \
         --url $QA_HOST --pat $QA_TOKEN \
-        --notebook /projects/cicd-smoother/tests/notebooks/dlt_pipeline \
+        --notebook /projects/cicd-techsession-july2022/tests/notebooks/dlt_pipeline \
         --pipeline_id 72d401c0-fcd3-4c39-8dd0-d9778fd42376 \
         --branch_name $(Build.SourceBranchName)
       env:
@@ -84,7 +84,7 @@ stages:
     - script: |
         python $(Build.Repository.LocalPath)/cicd/cicd-scripts/update-test-jobs-confs.py \
         --url $QA_HOST --pat $QA_TOKEN \
-        --notebook /projects/cicd-smoother/tests/notebooks/test_runner \
+        --notebook /projects/cicd-techsession-july2022/tests/notebooks/test_runner \
         --wheel $(Build.Repository.LocalPath)/dist \
         --jobid 1017991187895013 \
         --branch_name $(Build.SourceBranchName)
@@ -149,20 +149,20 @@ stages:
     - script: python setup.py sdist bdist_wheel
       displayName: 'Build python module'
 
-    # TODO use parameter instead of cicd-smoother -here and all around this file
+    # TODO use parameter instead of cicd-techsession-july2022 -here and all around this file
     - script: |
         databricks fs cp -r --overwrite $(Build.Repository.LocalPath)/dist \
-        dbfs:/projects/cicd-smoother/$(Build.SourceBranchName)/wheel/versions --profile QA
+        dbfs:/projects/cicd-techsession-july2022/$(Build.SourceBranchName)/wheel/versions --profile QA
       displayName: 'Copy build to QA DBFS'
 
-    - script: databricks workspace import_dir -o -e $(Build.Repository.LocalPath) /projects/cicd-smoother/ --profile QA
+    - script: databricks workspace import_dir -o -e $(Build.Repository.LocalPath) /projects/cicd-techsession-july2022/ --profile QA
       displayName: 'Copy test notebooks to QA workspace'
 
     # TODO put unit tests and integration tests under different jobs
     - script: |
         python $(Build.Repository.LocalPath)/cicd/cicd-scripts/update-test-jobs-confs.py \
         --url $QA_HOST --pat $QA_TOKEN \
-        --notebook /projects/cicd-smoother/tests/notebooks/test_runner \
+        --notebook /projects/cicd-techsession-july2022/tests/notebooks/test_runner \
         --wheel $(Build.Repository.LocalPath)/dist \
         --jobid 1017991187895013 \
         --branch_name $(Build.SourceBranchName)
@@ -211,11 +211,11 @@ stages:
         displayName: 'Install python dependencies'
 
       - script: |
-          mkdir -p $(Build.ArtifactStagingDirectory)/projects/cicd-smoother/
-          cp -r $(Build.Repository.LocalPath)/* $(Build.ArtifactStagingDirectory)/projects/cicd-smoother/
+          mkdir -p $(Build.ArtifactStagingDirectory)/projects/cicd-techsession-july2022/
+          cp -r $(Build.Repository.LocalPath)/* $(Build.ArtifactStagingDirectory)/projects/cicd-techsession-july2022/
         displayName: 'Copy notebooks, model.json, and transition scripts to common directory'
 
       - task: PublishBuildArtifacts@1
         inputs:
-          pathToPublish: '$(Build.ArtifactStagingDirectory)/projects/cicd-smoother/'
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/projects/cicd-techsession-july2022/'
           ArtifactName: '$(Build.Repository.Name)'

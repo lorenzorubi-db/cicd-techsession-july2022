@@ -16,7 +16,7 @@ class JobsUpdateRequestManager(RequesterBase):
 
     def get_data(self):
         libraries = [{
-            "whl": f"dbfs:/projects/cicd-smoother/{self.args.branch_name}/wheel/versions/{f}"
+            "whl": f"dbfs:/projects/cicd-techsession-july2022/{self.args.branch_name}/wheel/versions/{f}"
         } for f in os.listdir(self.args.wheel) if f.endswith(".whl")]
 
         with open('requirements-unit.txt') as f:
