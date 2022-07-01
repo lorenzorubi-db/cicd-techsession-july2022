@@ -1,0 +1,2 @@
+xmlrunner==1.7.7
+html-testRunner==1.2.1
