@@ -10,7 +10,7 @@ class FeatureEngineeringV2(unittest.TestCase):
 
         df = spark.createDataFrame([[2.8, 3.1], [0.0, 20.2]]).toDF("fixed acidity", "volatile acidity")
         df = df.transform(rename_columns)
-        actual_df = df.transform(engineer_features)
+        actual_df = df.transform(engineer_features) 
 
         expected_df = spark.createDataFrame(
             [
