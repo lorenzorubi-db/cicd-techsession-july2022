@@ -42,7 +42,6 @@ stages:
         QA_TOKEN: $(QA_TOKEN)
       displayName: 'Set up Databricks cli for QA workspace'
 
-    # TODO add libraries in the update-test-jobs-confs step instead of here
     - script: |
         python -m pip install --upgrade pip
         pip install -r requirements-cicd.txt
